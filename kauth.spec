@@ -5,7 +5,7 @@
 
 Name: kauth
 Version: 4.99.0
-Release: 1
+Release: 2
 Source0: http://ftp5.gwdg.de/pub/linux/kde/unstable/frameworks/%{version}/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 authentication library
 URL: http://kde.org/
@@ -25,6 +25,7 @@ KAuth is an abstraction to system policy and authentication features.
 %package -n %{libname}
 Summary: The KDE Frameworks 5 authentication library
 Group: System/Libraries
+Requires: %{name} = %{EVRD}
 
 %description -n %{libname}
 KAuth is an abstraction to system policy and authentication features.
