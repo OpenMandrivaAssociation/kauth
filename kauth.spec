@@ -16,6 +16,7 @@ BuildRequires: pkgconfig(Qt5Core)
 BuildRequires: cmake(KF5CoreAddons)
 BuildRequires: qmake5
 BuildRequires: extra-cmake-modules5
+BuildRequires: pkgconfig(polkit-qt-1)
 Requires: %{libname} = %{EVRD}
 
 %description
