@@ -5,7 +5,7 @@
 
 Name: kauth
 Version: 5.1.0
-Release: 1
+Release: 2
 Source0: http://ftp5.gwdg.de/pub/linux/kde/stable/frameworks/%{version}/%{name}-%{version}.tar.xz
 Patch0: kauth-5.1.0-compile.patch
 Summary: The KDE Frameworks 5 authentication library
@@ -59,6 +59,9 @@ for i in .%{_datadir}/locale/*/LC_MESSAGES/*.qm; do
 	echo -n "%lang($LNG) " >>$L
 	echo $i |cut -b2- >>$L
 done
+
+# Fix polkit-1 install directory -- /share is a bad idea.
+sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' %{buildroot}%{_libdir}/cmake/KF5Auth/KF5AuthConfig.cmake
 
 %files -f %{name}.lang
 %{_libdir}/libexec/kauth
