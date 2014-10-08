@@ -10,7 +10,7 @@
 +    set(KAUTH_BACKEND_LIBS polkit-qt5-core-1 Qt5::DBus Qt5::Widgets)
 +    include_directories("/usr/include/polkit-qt-1")
 +    string(REPLACE "/usr/share/polkit-1/actions"
-+        ${CMAKE_INSTALL_PREFIX} _KAUTH_POLICY_FILES_INSTALL_DIR
++        "/usr/share/polkit-1/actions" _KAUTH_POLICY_FILES_INSTALL_DIR
 +        "/usr/share/polkit-1/actions")
  
      set(KAUTH_POLICY_FILES_INSTALL_DIR ${_KAUTH_POLICY_FILES_INSTALL_DIR} CACHE STRING
