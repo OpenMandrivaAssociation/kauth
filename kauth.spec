@@ -43,15 +43,14 @@ KAuth is an abstraction to system policy and authentication features.
 %prep
 %setup -q
 %apply_patches
-%cmake
+%cmake -G Ninja \
+	-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=ON
 
 %build
-%make -C build
+ninja -C build
 
 %install
-%makeinstall_std -C build
-mkdir -p %{buildroot}%{_libdir}/qt5
-mv %{buildroot}%{_prefix}/mkspecs %{buildroot}%{_libdir}/qt5
+DESTDIR="%{buildroot}" ninja install -C build
 
 L="`pwd`/%{name}.lang"
 cd %{buildroot}
@@ -66,7 +65,7 @@ sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' 
 
 %files -f %{name}.lang
 %{_libdir}/libexec/kauth
-%{_libdir}/plugins/kauth
+%{_libdir}/qt5/plugins/kauth
 %{_sysconfdir}/dbus-1/system.d/org.kde.kf5auth.conf
 %{_datadir}/kf5/kauth
 
