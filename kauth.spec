@@ -5,9 +5,9 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version: 5.5.0
+Version: 5.6.0
 Release: 1
-Source0: http://ftp5.gwdg.de/pub/linux/kde/%{stable}/frameworks/%{version}/%{name}-%{version}.tar.xz
+Source0: http://ftp5.gwdg.de/pub/linux/kde/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Patch0: kauth-5.3.0-compile.patch
 Summary: The KDE Frameworks 5 authentication library
 URL: http://kde.org/
