@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   kauth-5.13.0.tar.xz: 7e0c8aa0ea1a53c05a5b6f6b25b4495a99580abb
+sources:
+  kauth-5.14.0.tar.xz: 434f9e70793fe3ff38c054adfb308be5397dd693
