@@ -5,8 +5,8 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version:	5.18.0
-Release:	1
+Version: 5.18.0
+Release: 2
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Patch0: kauth-5.3.0-compile.patch
 Summary: The KDE Frameworks 5 authentication library
@@ -15,6 +15,9 @@ License: GPL
 Group: System/Libraries
 BuildRequires: cmake(ECM)
 BuildRequires: pkgconfig(Qt5Core)
+BuildRequires: pkgconfig(Qt5Widgets)
+BuildRequires: pkgconfig(Qt5DBus)
+BuildRequires: pkgconfig(Qt5Test)
 BuildRequires: cmake(KF5CoreAddons)
 BuildRequires: pkgconfig(polkit-qt5-1)
 Requires: %{libname} = %{EVRD}
@@ -41,7 +44,7 @@ KAuth is an abstraction to system policy and authentication features.
 %prep
 %setup -q
 %apply_patches
-%cmake_kde5
+%cmake_kde5 -DKAUTH_BACKEND=PolkitQt5-1
 
 %build
 %ninja -C build
