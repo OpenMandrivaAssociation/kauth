@@ -6,7 +6,7 @@
 
 Name: kauth
 Version: 5.18.0
-Release: 2
+Release: 3
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Patch0: kauth-5.3.0-compile.patch
 Summary: The KDE Frameworks 5 authentication library
@@ -44,7 +44,7 @@ KAuth is an abstraction to system policy and authentication features.
 %prep
 %setup -q
 %apply_patches
-%cmake_kde5 -DKAUTH_BACKEND=PolkitQt5-1
+%cmake_kde5 -DKAUTH_BACKEND=PolkitQt5-1 -DLIBEXEC_INSTALL_DIR=%{_kde5_libexecdir}
 
 %build
 %ninja -C build
