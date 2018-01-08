@@ -5,7 +5,7 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version: 5.41.0
+Version: 5.42.0
 Release: 1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 #Patch0: kauth-5.3.0-compile.patch
@@ -67,6 +67,7 @@ sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' 
 %{_libdir}/libexec/kauth
 %{_libdir}/qt5/plugins/kauth
 %{_sysconfdir}/dbus-1/system.d/org.kde.kf5auth.conf
+%{_sysconfdir}/xdg/kauth.categories
 %{_datadir}/kf5/kauth
 
 %files -n %{libname}
