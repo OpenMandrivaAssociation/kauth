@@ -5,7 +5,7 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version: 5.48.0
+Version: 5.49.0
 Release: 1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 #Patch0: kauth-5.3.0-compile.patch
