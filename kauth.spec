@@ -5,8 +5,8 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version: 5.56.0
-Release: 2
+Version: 5.57.0
+Release: 1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 #Patch0: kauth-5.3.0-compile.patch
 Summary: The KDE Frameworks 5 authentication library
@@ -20,6 +20,14 @@ BuildRequires: pkgconfig(Qt5DBus)
 BuildRequires: pkgconfig(Qt5Test)
 BuildRequires: cmake(KF5CoreAddons)
 BuildRequires: pkgconfig(polkit-qt5-1)
+# For Python bindings
+BuildRequires: cmake(PythonModuleGeneration)
+BuildRequires: pkgconfig(python3)
+BuildRequires: python-qt5-core
+BuildRequires: python-qt5-gui
+BuildRequires: python-qt5-widgets
+# For QCH format docs
+BuildRequires: qt5-assistant
 Requires: %{libname} = %{EVRD}
 
 %description
@@ -41,9 +49,24 @@ Requires: %{libname} = %{EVRD}
 %description -n %{devname}
 KAuth is an abstraction to system policy and authentication features.
 
+%package -n %{name}-devel-docs
+Summary: Developer documentation for %{name} for use with Qt Assistant
+Group: Documentation
+Suggests: %{devname} = %{EVRD}
+
+%description -n %{name}-devel-docs
+Developer documentation for %{name} for use with Qt Assistant
+
+%package -n python-%{name}
+Summary: Python bindings for %{name}
+Group: System/Libraries
+Requires: %{libname} = %{EVRD}
+
+%description -n python-%{name}
+Python bindings for %{name}
+
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 %cmake_kde5 -DKAUTH_BACKEND=PolkitQt5-1 -DLIBEXEC_INSTALL_DIR=%{_kde5_libexecdir}
 
 %build
@@ -63,6 +86,8 @@ done
 # Fix polkit-1 install directory -- /share is a bad idea.
 sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' %{buildroot}%{_libdir}/cmake/KF5Auth/KF5AuthConfig.cmake
 
+[ -s %{buildroot}%{python_sitearch}/PyKF5/__init__.py ] || rm -f %{buildroot}%{python_sitearch}/PyKF5/__init__.py
+
 %files -f %{name}.lang
 %{_libdir}/libexec/kauth
 %{_libdir}/qt5/plugins/kauth
@@ -79,3 +104,12 @@ sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' 
 %{_libdir}/*.so
 %{_libdir}/cmake/KF5Auth
 %{_libdir}/qt5/mkspecs/modules/*
+
+%files -n %{name}-devel-docs
+%{_docdir}/qt5/*.{tags,qch}
+
+%files -n python-%{name}
+%dir %{python_sitearch}/PyKF5
+%{python_sitearch}/PyKF5/KAuth.so
+%dir %{_datadir}/sip/PyKF5
+%{_datadir}/sip/PyKF5/KAuth
