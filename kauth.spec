@@ -26,9 +26,11 @@ BuildRequires: pkgconfig(python3)
 BuildRequires: python-qt5-core
 BuildRequires: python-qt5-gui
 BuildRequires: python-qt5-widgets
+BuildRequires: python-kcoreaddons
 # For QCH format docs
 BuildRequires: doxygen
 BuildRequires: qt5-assistant
+BuildRequires: kcoreaddons-devel-docs
 Requires: %{libname} = %{EVRD}
 
 %description
