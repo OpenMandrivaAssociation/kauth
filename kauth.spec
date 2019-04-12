@@ -27,6 +27,7 @@ BuildRequires: python-qt5-core
 BuildRequires: python-qt5-gui
 BuildRequires: python-qt5-widgets
 # For QCH format docs
+BuildRequires: doxygen
 BuildRequires: qt5-assistant
 Requires: %{libname} = %{EVRD}
 
