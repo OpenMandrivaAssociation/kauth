@@ -5,7 +5,7 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version: 5.59.0
+Version: 5.60.0
 Release: 1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 #Patch0: kauth-5.3.0-compile.patch
@@ -89,12 +89,15 @@ done
 # Fix polkit-1 install directory -- /share is a bad idea.
 sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' %{buildroot}%{_libdir}/cmake/KF5Auth/KF5AuthConfig.cmake
 
+# Let's not ship py2 crap unless and until something still needs it...
+rm -rf %{buildroot}%{_libdir}/python2*
+
 [ -s %{buildroot}%{python_sitearch}/PyKF5/__init__.py ] || rm -f %{buildroot}%{python_sitearch}/PyKF5/__init__.py
 
 %files -f %{name}.lang
 %{_libdir}/libexec/kauth
 %{_libdir}/qt5/plugins/kauth
-%{_sysconfdir}/xdg/kauth.categories
+%{_datadir}/qlogging-categories5/kauth.categories
 %{_datadir}/dbus-1/system.d/org.kde.kf5auth.conf
 %{_datadir}/kf5/kauth
 
