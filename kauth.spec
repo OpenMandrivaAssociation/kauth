@@ -5,8 +5,8 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version: 5.67.0
-Release: 3
+Version: 5.68.0
+Release: 1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 #Patch0: kauth-5.3.0-compile.patch
 Summary: The KDE Frameworks 5 authentication library
