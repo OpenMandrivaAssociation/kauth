@@ -5,7 +5,7 @@
 %define debug_package %{nil}
 
 Name: kauth
-Version: 5.75.0
+Version: 5.76.0
 Release: 1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 #Patch0: kauth-5.3.0-compile.patch
@@ -95,7 +95,6 @@ rm -rf %{buildroot}%{_libdir}/python2*
 [ -s %{buildroot}%{python_sitearch}/PyKF5/__init__.py ] || rm -f %{buildroot}%{python_sitearch}/PyKF5/__init__.py
 
 %files -f %{name}.lang
-%{_libdir}/libexec/kauth
 %{_libdir}/qt5/plugins/kauth
 %{_datadir}/qlogging-categories5/kauth.categories
 %{_datadir}/qlogging-categories5/kauth.renamecategories
