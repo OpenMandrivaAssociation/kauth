@@ -6,9 +6,8 @@
 
 Name: kauth
 Version: 5.76.0
-Release: 2
+Release: 3
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
-#Patch0: kauth-5.3.0-compile.patch
 Summary: The KDE Frameworks 5 authentication library
 URL: http://kde.org/
 License: GPL
@@ -27,6 +26,8 @@ BuildRequires: python-qt5-core
 BuildRequires: python-qt5-gui
 BuildRequires: python-qt5-widgets
 BuildRequires: python-kcoreaddons
+BuildRequires: python-sip4
+BuildRequires: python-sip4-qt5
 # For QCH format docs
 BuildRequires: doxygen
 BuildRequires: qt5-assistant
@@ -70,7 +71,14 @@ Python bindings for %{name}
 
 %prep
 %autosetup -p1
-%cmake_kde5 -DKAUTH_BACKEND=PolkitQt5-1 -DLIBEXEC_INSTALL_DIR=%{_kde5_libexecdir}
+%cmake_kde5 \
+	-DLIBEXEC_INSTALL_DIR=%{_kde5_libexecdir}
+
+if grep -qE '^KAUTH_BACKEND_NAME:STRING=FAKE' CMakeCache.txt; then
+	echo "Not building any valid backends. Double-check cmake parameters,"
+	echo "in particular KAUTH_BACKEND_NAME"
+	exit 1
+fi
 
 %build
 %ninja -C build
@@ -110,6 +118,7 @@ rm -rf %{buildroot}%{_libdir}/python2*
 %{_libdir}/*.so
 %{_libdir}/cmake/KF5Auth
 %{_libdir}/qt5/mkspecs/modules/*
+%{_libdir}/libexec/kauth/kauth-policy-gen
 
 %files -n %{name}-devel-docs
 %{_docdir}/qt5/*.{tags,qch}
