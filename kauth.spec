@@ -5,7 +5,7 @@
 
 Name: kauth
 Version: 5.82.0
-Release: 1
+Release: 2
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 authentication library
 URL: http://kde.org/
@@ -71,12 +71,12 @@ Python bindings for %{name}
 %prep
 %autosetup -p1
 %cmake_kde5 \
-	-DLIBEXEC_INSTALL_DIR=%{_kde5_libexecdir}
+	-DKDE_INSTALL_LIBEXECDIR=%{_kde5_libexecdir}
 
 if grep -qE '^KAUTH_BACKEND_NAME:STRING=FAKE' CMakeCache.txt; then
-	echo "Not building any valid backends. Double-check cmake parameters,"
-	echo "in particular KAUTH_BACKEND_NAME"
-	exit 1
+    echo "Not building any valid backends. Double-check cmake parameters,"
+    echo "in particular KAUTH_BACKEND_NAME"
+    exit 1
 fi
 
 %build
@@ -85,12 +85,12 @@ fi
 %install
 %ninja_install -C build
 
-L="`pwd`/%{name}.lang"
+L="$(pwd)/%{name}.lang"
 cd %{buildroot}
 for i in .%{_datadir}/locale/*/LC_MESSAGES/*.qm; do
-	LNG=`echo $i |cut -d/ -f5`
-	echo -n "%lang($LNG) " >>$L
-	echo $i |cut -b2- >>$L
+    LNG=$(echo $i |cut -d/ -f5)
+    echo -n "%lang($LNG) " >>$L
+    echo $i |cut -b2- >>$L
 done
 
 # Fix polkit-1 install directory -- /share is a bad idea.
@@ -107,6 +107,8 @@ rm -rf %{buildroot}%{_libdir}/python2*
 %{_datadir}/qlogging-categories5/kauth.renamecategories
 %{_datadir}/dbus-1/system.d/org.kde.kf5auth.conf
 %{_datadir}/kf5/kauth
+%dir %{_kde5_libexecdir}/kauth
+%{_kde5_libexecdir}/kauth/kauth-policy-gen
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}
@@ -117,7 +119,6 @@ rm -rf %{buildroot}%{_libdir}/python2*
 %{_libdir}/*.so
 %{_libdir}/cmake/KF5Auth
 %{_libdir}/qt5/mkspecs/modules/*
-%{_libdir}/libexec/kauth/kauth-policy-gen
 
 %files -n %{name}-devel-docs
 %{_docdir}/qt5/*.{tags,qch}
