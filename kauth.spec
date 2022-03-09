@@ -4,7 +4,7 @@
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 
 Name: kauth
-Version: 5.91.0
+Version: 5.92.0
 Release: 1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 authentication library
@@ -18,15 +18,7 @@ BuildRequires: pkgconfig(Qt5DBus)
 BuildRequires: pkgconfig(Qt5Test)
 BuildRequires: cmake(KF5CoreAddons)
 BuildRequires: pkgconfig(polkit-qt5-1)
-# For Python bindings
-BuildRequires: cmake(PythonModuleGeneration)
-BuildRequires: pkgconfig(python3)
-BuildRequires: python-qt5-core
-BuildRequires: python-qt5-gui
-BuildRequires: python-qt5-widgets
-BuildRequires: python-kcoreaddons
-BuildRequires: python-sip4
-BuildRequires: python-sip4-qt5
+Obsoletes: python-%{name} < %{EVRD}
 # For QCH format docs
 BuildRequires: doxygen
 BuildRequires: qt5-assistant
@@ -60,14 +52,6 @@ Suggests: %{devname} = %{EVRD}
 %description -n %{name}-devel-docs
 Developer documentation for %{name} for use with Qt Assistant
 
-%package -n python-%{name}
-Summary: Python bindings for %{name}
-Group: System/Libraries
-Requires: %{libname} = %{EVRD}
-
-%description -n python-%{name}
-Python bindings for %{name}
-
 %prep
 %autosetup -p1
 %cmake_kde5 \
@@ -96,11 +80,6 @@ done
 # Fix polkit-1 install directory -- /share is a bad idea.
 sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' %{buildroot}%{_libdir}/cmake/KF5Auth/KF5AuthConfig.cmake
 
-# Let's not ship py2 crap unless and until something still needs it...
-rm -rf %{buildroot}%{_libdir}/python2*
-
-[ -s %{buildroot}%{python_sitearch}/PyKF5/__init__.py ] || rm -f %{buildroot}%{python_sitearch}/PyKF5/__init__.py
-
 %files -f %{name}.lang
 %{_libdir}/qt5/plugins/kauth
 %{_datadir}/qlogging-categories5/kauth.categories
@@ -122,9 +101,3 @@ rm -rf %{buildroot}%{_libdir}/python2*
 
 %files -n %{name}-devel-docs
 %{_docdir}/qt5/*.{tags,qch}
-
-%files -n python-%{name}
-%dir %{python_sitearch}/PyKF5
-%{python_sitearch}/PyKF5/KAuth.so
-%dir %{_datadir}/sip/PyKF5
-%{_datadir}/sip/PyKF5/KAuth
