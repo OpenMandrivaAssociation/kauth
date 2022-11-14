@@ -3,6 +3,8 @@
 %define devname %mklibname KF5Auth -d
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 
+%define __requires_exclude cmake.*PolkitQt
+
 Name: kauth
 Version: 5.100.0
 Release: 1
