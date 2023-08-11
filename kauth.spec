@@ -7,7 +7,7 @@
 
 Name: kauth
 Version: 5.108.0
-Release: 1
+Release: 2
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 authentication library
 URL: http://kde.org/
@@ -26,6 +26,8 @@ BuildRequires: doxygen
 BuildRequires: qt5-assistant
 BuildRequires: kcoreaddons-devel-docs
 Requires: %{libname} = %{EVRD}
+# We get this from kf6 now
+Requires: kauth-policy-gen
 
 %description
 KAuth is an abstraction to system policy and authentication features.
@@ -82,14 +84,15 @@ done
 # Fix polkit-1 install directory -- /share is a bad idea.
 sed -i -e 's,POLICY_FILES_INSTALL_DIR "/share,POLICY_FILES_INSTALL_DIR "share,' %{buildroot}%{_libdir}/cmake/KF5Auth/KF5AuthConfig.cmake
 
+# We get this from kf6 now
+rm -rf %{buildroot}%{_kde5_libexecdir}/kauth
+
 %files -f %{name}.lang
 %{_libdir}/qt5/plugins/kauth
 %{_datadir}/qlogging-categories5/kauth.categories
 %{_datadir}/qlogging-categories5/kauth.renamecategories
 %{_datadir}/dbus-1/system.d/org.kde.kf5auth.conf
 %{_datadir}/kf5/kauth
-%dir %{_kde5_libexecdir}/kauth
-%{_kde5_libexecdir}/kauth/kauth-policy-gen
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}
